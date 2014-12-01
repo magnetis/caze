@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = UseCaseSupport::VERSION
   spec.authors       = ["Magnetis team"]
   spec.email         = ["dev@magnetis.com.br"]
-  spec.summary       = %q{UseCaseSupport summary}
-  spec.description   = %q{UseCaseSupport description}
+  spec.summary       = %q{A support for Magnetis use cases}
+  spec.description   = %q{With UseCaseSupport it's easy to define use cases and entry points.}
   spec.homepage      = "https://www.magnetis.com.br"
   spec.license       = "Magnetis"
 
