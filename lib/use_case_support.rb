@@ -1,6 +1,7 @@
 require 'use_case_support/version'
 require 'active_support'
 require 'active_support/concern'
+require 'active_support/core_ext/module/delegation'
 
 module UseCaseSupport
   extend ActiveSupport::Concern
@@ -15,9 +16,9 @@ module UseCaseSupport
     def define_entry_point(method_name, options = {})
       method_to_define = options.fetch(:as) { method_name }
 
-      define_singleton_method(method_to_define) do |keyword_args|
-        new(keyword_args).send(method_name)
-      end
+      define_singleton_method(method_to_define, Proc.new { |*args|
+        new(args).send(method_name)
+      })
     end
   end
 end
