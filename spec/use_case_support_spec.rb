@@ -2,36 +2,39 @@ require 'spec_helper'
 require 'use_case_support'
 
 describe UseCaseSupport do
-  class DummyUseCase
-    include UseCaseSupport
-
-    define_entry_point :the_answer
-
-    def the_answer
-      42
+  before do
+    # Removing constant definitions if they exist
+    # This avoids state to be permanent through tests
+    [:DummyUseCase, :DummyUseCaseWithParam, :Dummy].each do |const|
+      Object.send(:remove_const, const) if Object.constants.include?(const)
     end
 
-  end
+    class DummyUseCase
+      include UseCaseSupport
 
-  class DummyUseCaseWithParam
-    include UseCaseSupport
+      define_entry_point :the_answer
 
-    define_entry_point :the_answer_for
-
-    def initialize(question)
-      @question = question
+      def the_answer
+        42
+      end
     end
 
-    def the_answer_for
-      42
+    class DummyUseCaseWithParam < Struct.new(:answer)
+      include UseCaseSupport
+
+      define_entry_point :the_answer_for
+
+      def the_answer_for
+        42
+      end
     end
-  end
 
-  module Dummy
-    include UseCaseSupport
+    module Dummy
+      include UseCaseSupport
 
-    define_use_cases the_answer: DummyUseCase,
-                     the_answer_for: DummyUseCaseWithParam
+      define_use_cases the_answer: DummyUseCase,
+                       the_answer_for: DummyUseCaseWithParam
+    end
   end
 
   let(:use_case) { DummyUseCase }
@@ -92,7 +95,7 @@ describe UseCaseSupport do
                                       transaction: true
         end
 
-        xit 'raises an exception' do
+        it 'raises an exception' do
           expect {
             use_case.the_answer_with_transaction
           }.to raise_error(/This action should be executed inside a transaction/)

@@ -8,6 +8,8 @@ module UseCaseSupport
   extend ActiveSupport::Concern
 
   module ClassMethods
+    attr_accessor :transaction_handler
+
     def define_use_cases(use_cases)
       use_cases.each_pair do |name, use_case|
         main_module = self
@@ -32,21 +34,11 @@ module UseCaseSupport
 
           raise NoTransactionMethodError, "This action should be executed inside a transaction. But no transaction handler was given" unless handler
 
-          handler.transaction do
-            object.send(method_name)
-          end
+          handler.transaction { object.send(method_name) }
         else
           object.send(method_name)
         end
       })
-    end
-
-    def transaction_handler=(handler)
-      @handler = handler
-    end
-
-    def transaction_handler
-      @handler
     end
   end
 end
