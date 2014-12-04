@@ -79,7 +79,7 @@ describe UseCaseSupport do
           app.transaction_handler = transaction_handler
           use_case.define_entry_point :the_answer,
                                       as: :the_answer_with_transaction,
-                                      transaction: true
+                                      use_transaction: true
         end
 
         it 'uses the transaction handler' do
@@ -92,7 +92,7 @@ describe UseCaseSupport do
         before do
           use_case.define_entry_point :the_answer,
                                       as: :the_answer_with_transaction,
-                                      transaction: true
+                                      use_transaction: true
         end
 
         it 'raises an exception' do
