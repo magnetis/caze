@@ -17,11 +17,9 @@ require 'use_case_support'
 require 'project/use_cases/foo'
 
 module Project
-  class << self
-    include UseCaseSupport
+  include UseCaseSupport
 
-    define_use_cases foo: UseCases::Foo
-  end
+  define_use_cases foo: UseCases::Foo
 end
 ```
 
@@ -49,7 +47,23 @@ The usage is like was before:
 Project.foo # This will call foo inside the use case `Foo`
 ```
 
-## TODO
+## Using transactions
 
-* Handle cases where arguments are not key word arguments;
-* Handle cases where arity is zero.
+You can use transactions in your use cases by providing a `transaction_handler`
+in your project entry point. The only method that transaction handler should
+respond is `#transaction`.
+
+```ruby
+Project.transaction_handler = ActiveRecord::Base
+```
+
+Inside your use case, you need to define the entry point with the flag
+`use_transaction` set to `true`.
+
+```ruby
+define_entry_point :foo, use_transaction: true
+```
+
+Note that the transaction handler should implement `#transaction` and
+return the value inside the block. It will also be responsible for handle errors
+and roll back and necessary.
