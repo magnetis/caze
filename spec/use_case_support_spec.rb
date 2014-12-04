@@ -10,14 +10,28 @@ describe UseCaseSupport do
     def the_answer
       42
     end
+
+  end
+
+  class DummyUseCaseWithParam
+    include UseCaseSupport
+
+    define_entry_point :the_answer_for
+
+    def initialize(question)
+      @question = question
+    end
+
+    def the_answer_for
+      42
+    end
   end
 
   module Dummy
-    class << self
-      include UseCaseSupport
+    include UseCaseSupport
 
-      define_use_cases the_answer: DummyUseCase
-    end
+    define_use_cases the_answer: DummyUseCase,
+                     the_answer_for: DummyUseCaseWithParam
   end
 
   let(:use_case) { DummyUseCase }
@@ -27,6 +41,12 @@ describe UseCaseSupport do
     it 'delegates the use case message to the use case' do
       allow(use_case).to receive(:the_answer)
       app.the_answer
+    end
+
+    context 'when method has params' do
+      it 'calls the method with the right params' do
+        expect(app.the_answer_for('the meaning of life')).to eql(42)
+      end
     end
   end
 
@@ -45,26 +65,39 @@ describe UseCaseSupport do
       end
     end
 
+
     context 'using transaction' do
       context 'when there is a transaction method' do
         let(:transaction_handler) do
-          Class.new do
-            def self.transaction
-              yield
-            end
-          end
-        end
-        before do
-          app.define_transaction_handler transaction_handler
-          use_case.define_entry_point :the_answer, as: :the_answer_with_transaction, transaction: true
+          double(:transaction_handler)
         end
 
-        xit 'uses the transaction handler' do
-          allow(transaction_handler).to receive(:transaction)
+        before do
+          app.transaction_handler = transaction_handler
+          use_case.define_entry_point :the_answer,
+                                      as: :the_answer_with_transaction,
+                                      transaction: true
+        end
+
+        it 'uses the transaction handler' do
+          expect(transaction_handler).to receive(:transaction)
           use_case.the_answer_with_transaction
         end
       end
-    end
 
+      context 'when there is no transaction method defined' do
+        before do
+          use_case.define_entry_point :the_answer,
+                                      as: :the_answer_with_transaction,
+                                      transaction: true
+        end
+
+        xit 'raises an exception' do
+          expect {
+            use_case.the_answer_with_transaction
+          }.to raise_error(/This action should be executed inside a transaction/)
+        end
+      end
+    end
   end
 end
