@@ -19,13 +19,17 @@ describe UseCaseSupport do
       end
     end
 
-    class DummyUseCaseWithParam < Struct.new(:answer)
+    class DummyUseCaseWithParam
       include UseCaseSupport
 
       define_entry_point :the_answer_for
 
+      def initialize(question, priority: :low)
+        @priority = priority
+      end
+
       def the_answer_for
-        42
+        [@priority, 42]
       end
     end
 
@@ -48,7 +52,7 @@ describe UseCaseSupport do
 
     context 'when method has params' do
       it 'calls the method with the right params' do
-        expect(app.the_answer_for('the meaning of life')).to eql(42)
+        expect(app.the_answer_for('the meaning of life', priority: :high)).to eql([:high, 42])
       end
     end
   end

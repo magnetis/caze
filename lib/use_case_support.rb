@@ -29,7 +29,7 @@ module UseCaseSupport
       use_transaction  = options.fetch(:use_transaction) { false }
 
       define_singleton_method(method_to_define, Proc.new { |*args|
-        use_case_object = args.empty? ? new : new(args)
+        use_case_object = args.empty? ? new : new(*args)
 
         if use_transaction
           handler = parent_module.transaction_handler
