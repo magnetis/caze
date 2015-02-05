@@ -67,3 +67,8 @@ define_entry_point :foo, use_transaction: true
 Note that the transaction handler should implement `#transaction` and
 return the value inside the block. It will also be responsible for handle errors
 and rollback if necessary.
+
+# License
+
+Apache License 2.0
+Check LICENSE.txt
