@@ -6,7 +6,7 @@ require 'caze/version'
 Gem::Specification.new do |spec|
   spec.name          = "caze"
   spec.version       = Caze::VERSION
-  spec.authors       = ["Magnetis team"]
+  spec.authors       = ["Philip Sampaio", "Fabiano Beselga"]
   spec.email         = ["philip@magnetis.com.br", "fabiano@magnetis.com.br"]
   spec.summary       = %q{A DSL to define use cases}
   spec.description   = %q{With Caze it's easy to define use cases and entry points.}
