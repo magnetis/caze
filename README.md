@@ -23,7 +23,7 @@ module Project
 end
 ```
 
-You `Foo` use case should looks like:
+Your `Foo` use case should looks like:
 
 ```ruby
 module Project
@@ -70,5 +70,6 @@ and rollback if necessary.
 
 # License
 
-Apache License 2.0
+## Apache License 2.0
+
 Check LICENSE.txt
