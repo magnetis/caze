@@ -1,4 +1,4 @@
-# UseCaseSupport
+# Caze
 
 This is a simple DSL to work with use case definitions.
 The main propose is to avoid the verbose declarations of
@@ -6,18 +6,18 @@ use cases entry points inside the main project file.
 
 ## Usage
 
-Require the `UseCaseSupport` in your project entry point,
+Require the `Caze` in your project entry point,
 and include it in your main module "class".
 
 ```ruby
 # Entry point file
 
 require 'project/version'
-require 'use_case_support'
+require 'caze'
 require 'project/use_cases/foo'
 
 module Project
-  include UseCaseSupport
+  include Caze
 
   define_use_cases foo: UseCases::Foo
 end
@@ -29,7 +29,7 @@ You `Foo` use case should looks like:
 module Project
   module UseCases
     class Foo
-      include UseCaseSupport
+      include Caze
 
       define_entry_point :foo
 

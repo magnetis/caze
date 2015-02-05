@@ -1,3 +1,3 @@
-module UseCaseSupport
+module Caze
   VERSION = "0.0.2"
 end

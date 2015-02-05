@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'use_case_support'
+require 'caze'
 
-describe UseCaseSupport do
+describe Caze do
   before do
     # Removing constant definitions if they exist
     # This avoids state to be permanent through tests
@@ -10,7 +10,7 @@ describe UseCaseSupport do
     end
 
     class DummyUseCase
-      include UseCaseSupport
+      include Caze
 
       define_entry_point :the_answer
 
@@ -20,7 +20,7 @@ describe UseCaseSupport do
     end
 
     class DummyUseCaseWithParam
-      include UseCaseSupport
+      include Caze
 
       define_entry_point :the_answer_for
 
@@ -34,7 +34,7 @@ describe UseCaseSupport do
     end
 
     module Dummy
-      include UseCaseSupport
+      include Caze
 
       define_use_cases the_answer: DummyUseCase,
                        the_answer_for: DummyUseCaseWithParam

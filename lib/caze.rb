@@ -1,9 +1,9 @@
-require 'use_case_support/version'
+require 'caze/version'
 require 'active_support'
 require 'active_support/concern'
 require 'active_support/core_ext/module/delegation'
 
-module UseCaseSupport
+module Caze
   class NoTransactionMethodError < StandardError; end
   extend ActiveSupport::Concern
 
