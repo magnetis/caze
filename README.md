@@ -1,29 +1,60 @@
 # Caze
 
-This is a simple DSL to work with use case definitions.
+This is a simple DSL to easily define use cases.
 The main propose is to avoid the verbose declarations of
 use cases entry points inside the main project file.
 
 ## Usage
 
-Require the `Caze` in your project entry point,
-and include it in your main module "class".
+Instead of doing this:
 
 ```ruby
-# Entry point file
+module Project
+  def self.sum(x, y)
+    UseCases::Sum.execute(x, y)
+  end
 
-require 'project/version'
+  def self.subtract(x, y)
+    UseCases::Subtract.execute(x, y)
+  end
+end
+```
+
+You can do this:
+
+```ruby
 require 'caze'
-require 'project/use_cases/foo'
 
 module Project
   include Caze
 
-  define_use_cases foo: UseCases::Foo
+  define_use_cases sum:      UseCases::Sum,
+                   subtract: UseCases::Subtract
 end
 ```
 
-Your `Foo` use case should looks like:
+And in the `UseCases::Sum` instead of this:
+
+```ruby
+module Project
+  module UseCases
+    class Sum
+      def self.execute(x ,y)
+        new(x,y).foo
+      end
+
+      def initialize(x, y)
+        @x = x
+        @y = y
+      end
+
+      def sum
+        x + y
+      end
+    end
+  end
+end
+```
 
 ```ruby
 module Project
@@ -31,10 +62,15 @@ module Project
     class Foo
       include Caze
 
-      define_entry_point :foo
+      define_entry_point :sum, as: :execute
 
-      def foo
-        puts "bar"
+      def initialize(x, y)
+        @x = x
+        @y = y
+      end
+
+      def sum
+        x + y
       end
     end
   end
@@ -44,7 +80,7 @@ end
 The usage is like was before:
 
 ```ruby
-Project.foo # This will call foo inside the use case `Foo`
+Project.sum(4, 2) # This will call sum inside the use case `UseCases::Sum`
 ```
 
 ## Using transactions
@@ -68,8 +104,6 @@ Note that the transaction handler should implement `#transaction` and
 return the value inside the block. It will also be responsible for handle errors
 and rollback if necessary.
 
-# License
-
-## Apache License 2.0
+# Apache License 2.0
 
 Check LICENSE.txt
