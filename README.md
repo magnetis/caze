@@ -56,6 +56,8 @@ module Project
 end
 ```
 
+You can define the entry point (the class method) with `define_entry_point`:
+
 ```ruby
 module Project
   module UseCases
