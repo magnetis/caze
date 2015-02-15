@@ -36,15 +36,15 @@ describe Caze do
     module Dummy
       include Caze
 
-      define_use_cases the_answer: DummyUseCase,
-                       the_answer_for: DummyUseCaseWithParam
+      define_entry_points the_answer: DummyUseCase,
+                          the_answer_for: DummyUseCaseWithParam
     end
   end
 
   let(:use_case) { DummyUseCase }
   let(:app) { Dummy }
 
-  describe '.define_use_cases' do
+  describe '.define_entry_points' do
     it 'delegates the use case message to the use case' do
       allow(use_case).to receive(:the_answer)
       app.the_answer
