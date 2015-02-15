@@ -10,16 +10,16 @@ module Caze
   module ClassMethods
     attr_accessor :transaction_handler
 
-    def define_entry_points(entry_points)
-      entry_points.each_pair do |entry_point_name, entry_point_class|
+    def define_use_cases(use_cases)
+      use_cases.each_pair do |use_case_name, use_case_class|
         main_module = self
 
         # Define a reference to the parent module
         # in order to be able to use the transaction handler.
-        entry_point_class.define_singleton_method(:parent_module, ->() { main_module })
+        use_case_class.define_singleton_method(:parent_module, ->() { main_module })
 
-        define_singleton_method(entry_point_name, Proc.new { |*args|
-          entry_point_class.send(entry_point_name, *args)
+        define_singleton_method(use_case_name, Proc.new { |*args|
+          use_case_class.send(use_case_name, *args)
         })
       end
     end
@@ -29,16 +29,16 @@ module Caze
       use_transaction  = options.fetch(:use_transaction) { false }
 
       define_singleton_method(method_to_define, Proc.new { |*args|
-        entry_point_object = args.empty? ? new : new(*args)
+        use_case_object = args.empty? ? new : new(*args)
 
         if use_transaction
           handler = parent_module.transaction_handler
 
           raise NoTransactionMethodError, "This action should be executed inside a transaction. But no transaction handler was configured." unless handler
 
-          handler.transaction { entry_point_object.send(method_name) }
+          handler.transaction { use_case_object.send(method_name) }
         else
-          entry_point_object.send(method_name)
+          use_case_object.send(method_name)
         end
       })
     end
