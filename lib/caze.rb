@@ -24,7 +24,7 @@ module Caze
       end
     end
 
-    def define_entry_point(method_name, options = {})
+    def export(method_name, options = {})
       method_to_define = options.fetch(:as) { method_name }
       use_transaction  = options.fetch(:use_transaction) { false }
 

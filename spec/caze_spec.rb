@@ -12,7 +12,7 @@ describe Caze do
     class DummyUseCase
       include Caze
 
-      define_entry_point :the_answer
+      export :the_answer
 
       def the_answer
         42
@@ -22,7 +22,7 @@ describe Caze do
     class DummyUseCaseWithParam
       include Caze
 
-      define_entry_point :the_answer_for
+      export :the_answer_for
 
       def initialize(question, priority: :low)
         @priority = priority
@@ -57,14 +57,14 @@ describe Caze do
     end
   end
 
-  describe '.define_entry_point' do
+  describe '.export' do
     it 'defines a class method' do
       expect(use_case).to respond_to(:the_answer)
     end
 
     context 'using the flag `as`' do
       before do
-        use_case.define_entry_point :the_answer, as: :universal_answer
+        use_case.export :the_answer, as: :universal_answer
       end
 
       it 'defines an entry point with another name' do
@@ -81,7 +81,7 @@ describe Caze do
 
         before do
           app.transaction_handler = transaction_handler
-          use_case.define_entry_point :the_answer,
+          use_case.export :the_answer,
                                       as: :the_answer_with_transaction,
                                       use_transaction: true
         end
@@ -94,7 +94,7 @@ describe Caze do
 
       context 'when there is no transaction method defined' do
         before do
-          use_case.define_entry_point :the_answer,
+          use_case.export :the_answer,
                                       as: :the_answer_with_transaction,
                                       use_transaction: true
         end

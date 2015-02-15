@@ -56,7 +56,7 @@ module Project
 end
 ```
 
-You can define the entry point (the class method) with `define_entry_point`:
+You can define a class method based on an instance method with `export`:
 
 ```ruby
 module Project
@@ -64,7 +64,7 @@ module Project
     class Foo
       include Caze
 
-      define_entry_point :sum, as: :execute
+      export :sum, as: :execute
 
       def initialize(x, y)
         @x = x
@@ -99,7 +99,7 @@ Inside your use case, you need to define the entry point with the flag
 `use_transaction` set to `true`.
 
 ```ruby
-define_entry_point :foo, use_transaction: true
+export :foo, use_transaction: true
 ```
 
 Note that the transaction handler should implement `#transaction` and
