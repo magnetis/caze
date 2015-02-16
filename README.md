@@ -1,6 +1,6 @@
 # Caze
 
-This is a simple DSL to easily declare use cases as entry points of a gem.
+This is a simple DSL to declare use cases as entry points of a module.
 The purpose is to avoid the verbose declarations.
 
 ## Usage
@@ -35,7 +35,7 @@ end
 ## Using transactions
 
 You can use transactions in your use cases by providing a `transaction_handler`
-in your project entry point. The only method that transaction handler should
+in your module. The only method that transaction handler should
 respond is `#transaction`.
 
 ```ruby
