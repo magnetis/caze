@@ -1,8 +1,7 @@
 # Caze
 
-This is a simple DSL to easily define use cases.
-The main propose is to avoid the verbose declarations of
-use cases entry points inside the main project file.
+This is a simple DSL to declare use cases as entry points of a module.
+The purpose is to avoid the verbose declarations.
 
 ## Usage
 
@@ -28,12 +27,35 @@ require 'caze'
 module Project
   include Caze
 
-  define_use_cases sum:      UseCases::Sum,
-                   subtract: UseCases::Subtract
+  has_use_case sum:      UseCases::Sum,
+  has_use_case subtract: UseCases::Subtract
 end
 ```
 
-And in the `UseCases::Sum` instead of this:
+## Using transactions
+
+You can use transactions in your use cases by providing a `transaction_handler`
+in your module. The only method that transaction handler should
+respond is `#transaction`.
+
+```ruby
+Project.transaction_handler = ActiveRecord::Base
+```
+
+While declaring which use cases your app has, you can set the option
+`transactional` to `true`.
+
+```ruby
+  has_use_case wow: UseCases::Wow, transactional: true
+```
+
+Note that the transaction handler must implement `#transaction` and
+return the value inside the block. It will also be responsible for handle errors
+and rollback if necessary.
+
+## Exporting instance methods as class methods
+
+Inside the use case classes you can use the `.export` method, so in the `UseCases::Sum` instead of this:
 
 ```ruby
 module Project
@@ -56,7 +78,7 @@ module Project
 end
 ```
 
-You can define the entry point (the class method) with `define_entry_point`:
+You can define a class method based on an instance method with `export`:
 
 ```ruby
 module Project
@@ -64,7 +86,7 @@ module Project
     class Foo
       include Caze
 
-      define_entry_point :sum, as: :execute
+      export :sum, as: :execute
 
       def initialize(x, y)
         @x = x
@@ -79,32 +101,15 @@ module Project
 end
 ```
 
-The usage is like was before:
+The `as` param, tells how the class method must be named,
+if it is not passed the class method will have the of the instance method.
+
+
+With this you can call your project use cases without the need to know its internals:
 
 ```ruby
 Project.sum(4, 2) # This will call sum inside the use case `UseCases::Sum`
 ```
-
-## Using transactions
-
-You can use transactions in your use cases by providing a `transaction_handler`
-in your project entry point. The only method that transaction handler should
-respond is `#transaction`.
-
-```ruby
-Project.transaction_handler = ActiveRecord::Base
-```
-
-Inside your use case, you need to define the entry point with the flag
-`use_transaction` set to `true`.
-
-```ruby
-define_entry_point :foo, use_transaction: true
-```
-
-Note that the transaction handler should implement `#transaction` and
-return the value inside the block. It will also be responsible for handle errors
-and rollback if necessary.
 
 # Apache License 2.0
 
