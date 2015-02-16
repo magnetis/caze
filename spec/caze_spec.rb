@@ -36,9 +36,9 @@ describe Caze do
     module Dummy
       include Caze
 
-      define_use_cases the_answer:                    { use_case: DummyUseCase },
-                       the_answer_for:                { use_case: DummyUseCaseWithParam },
-                       the_answer_within_transaction: { use_case: DummyUseCase, within_transaction: true }
+      define_use_case :the_answer, DummyUseCase
+      define_use_case :the_answer_for, DummyUseCaseWithParam
+      define_use_case :the_transactional_answer, DummyUseCase, transactional: true
     end
   end
 
@@ -67,23 +67,17 @@ describe Caze do
 
         it 'uses the transaction handler' do
           expect(transaction_handler).to receive(:transaction)
-          app.the_answer_within_transaction
+          app.the_transactional_answer
         end
       end
 
-      #context 'when there is no transaction method defined' do
-        #before do
-          #use_case.export :the_answer,
-                                      #as: :the_answer_with_transaction,
-                                      #use_transaction: true
-        #end
-
-        #it 'raises an exception' do
-          #expect {
-            #use_case.the_answer_with_transaction
-          #}.to raise_error(/This action should be executed inside a transaction/)
-        #end
-      #end
+      context 'when there is no transaction method defined' do
+        it 'raises an exception' do
+          expect {
+            app.the_transactional_answer
+          }.to raise_error(/This action should be executed inside a transaction/)
+        end
+      end
     end
   end
 
