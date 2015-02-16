@@ -36,16 +36,16 @@ describe Caze do
     module Dummy
       include Caze
 
-      define_use_case :the_answer, DummyUseCase
-      define_use_case :the_answer_for, DummyUseCaseWithParam
-      define_use_case :the_transactional_answer, DummyUseCase, transactional: true
+      has_use_case :the_answer, DummyUseCase
+      has_use_case :the_answer_for, DummyUseCaseWithParam
+      has_use_case :the_transactional_answer, DummyUseCase, transactional: true
     end
   end
 
   let(:use_case) { DummyUseCase }
   let(:app) { Dummy }
 
-  describe '.define_use_cases' do
+  describe '.has_use_case' do
     it 'delegates the use case message to the use case' do
       allow(use_case).to receive(:the_answer)
       app.the_answer

@@ -10,7 +10,7 @@ module Caze
   module ClassMethods
     attr_accessor :transaction_handler
 
-    def define_use_case(use_case_name, use_case_class, options = {})
+    def has_use_case(use_case_name, use_case_class, options = {})
       transactional  = options.fetch(:transactional) { false }
 
       define_singleton_method(use_case_name, Proc.new { |*args|
