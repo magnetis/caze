@@ -19,7 +19,7 @@ module Caze
 
           raise NoTransactionMethodError, "This action should be executed inside a transaction. But no transaction handler was configured." unless handler
 
-          handler.transaction { use_case_object.send(method_name) }
+          handler.transaction { use_case_class.send(use_case_name, *args) }
         else
           use_case_class.send(use_case_name, *args)
         end

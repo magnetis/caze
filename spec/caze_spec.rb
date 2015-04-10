@@ -13,6 +13,7 @@ describe Caze do
       include Caze
 
       export :the_answer
+      export :the_answer, as: :the_transactional_answer
 
       def the_answer
         42
@@ -66,7 +67,7 @@ describe Caze do
         end
 
         it 'uses the transaction handler' do
-          expect(transaction_handler).to receive(:transaction)
+          expect(transaction_handler).to receive(:transaction).and_yield
           app.the_transactional_answer
         end
       end
