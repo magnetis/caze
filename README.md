@@ -27,8 +27,8 @@ require 'caze'
 module Project
   include Caze
 
-  has_use_case sum:      UseCases::Sum,
-  has_use_case subtract: UseCases::Subtract
+  has_use_case :sum, UseCases::Sum
+  has_use_case :subtract, UseCases::Subtract
 end
 ```
 
@@ -46,7 +46,7 @@ While declaring which use cases your app has, you can set the option
 `transactional` to `true`.
 
 ```ruby
-  has_use_case wow: UseCases::Wow, transactional: true
+  has_use_case :wow, UseCases::Wow, transactional: true
 ```
 
 Note that the transaction handler must implement `#transaction` and
