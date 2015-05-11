@@ -7,7 +7,7 @@ The purpose is to avoid the verbose declarations.
 
 Instead of doing this:
 
-`has_use_case``ruby
+```ruby
 module Project
   def self.sum(x, y)
     UseCases::Sum.execute(x, y)
