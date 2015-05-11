@@ -7,7 +7,7 @@ The purpose is to avoid the verbose declarations.
 
 Instead of doing this:
 
-```ruby
+`has_use_case``ruby
 module Project
   def self.sum(x, y)
     UseCases::Sum.execute(x, y)
@@ -102,7 +102,7 @@ end
 ```
 
 The `as` param, tells how the class method must be named,
-if it is not passed the class method will have the of the instance method.
+if it is not passed the class method will have the same name of the instance method.
 
 
 With this you can call your project use cases without the need to know its internals:
