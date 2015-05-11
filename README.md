@@ -102,7 +102,7 @@ end
 ```
 
 The `as` param, tells how the class method must be named,
-if it is not passed the class method will have the of the instance method.
+if it is not passed the class method will have the same name of the instance method.
 
 
 With this you can call your project use cases without the need to know its internals:
