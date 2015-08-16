@@ -10,11 +10,11 @@ Instead of doing this:
 ```ruby
 module Project
   def self.sum(x, y)
-    UseCases::Sum.execute(x, y)
+    UseCases::Sum.sum(x, y)
   end
 
   def self.subtract(x, y)
-    UseCases::Subtract.execute(x, y)
+    UseCases::Subtract.substract(x, y)
   end
 end
 ```
@@ -61,7 +61,7 @@ Inside the use case classes you can use the `.export` method, so in the `UseCase
 module Project
   module UseCases
     class Sum
-      def self.execute(x ,y)
+      def self.sum(x ,y)
         new(x,y).foo
       end
 
@@ -86,7 +86,7 @@ module Project
     class Foo
       include Caze
 
-      export :sum, as: :execute
+      export :sum
 
       def initialize(x, y)
         @x = x

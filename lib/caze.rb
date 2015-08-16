@@ -21,7 +21,7 @@ module Caze
 
           handler.transaction { use_case_class.send(use_case_name, *args) }
         else
-          use_case_class.send('execute', *args)
+          use_case_class.send( use_case_name, *args)
         end
       })
     end
