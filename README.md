@@ -1,5 +1,7 @@
 # Caze
 
+[![Build status](https://img.shields.io/travis/magnetis/caze.svg?branch=master)](https://travis-ci.org/magnetis/caze)
+
 This is a simple DSL to declare use cases as entry points of a module.
 The purpose is to avoid the verbose declarations.
 
