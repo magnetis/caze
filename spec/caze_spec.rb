@@ -14,6 +14,8 @@ describe Caze do
 
       export :the_answer
       export :the_answer, as: :the_transactional_answer
+      export :the_answer, as: :the_answer_by_another_entry_point
+      export :the_answer, as: :the_universal_answer
 
       def the_answer
         42
@@ -38,6 +40,8 @@ describe Caze do
       include Caze
 
       has_use_case :the_answer, DummyUseCase
+      has_use_case :the_answer_by_another_entry_point, 'DummyUseCase'
+      has_use_case :the_universal_answer, :DummyUseCase
       has_use_case :the_answer_for, DummyUseCaseWithParam
       has_use_case :the_transactional_answer, DummyUseCase, transactional: true
     end
@@ -47,14 +51,31 @@ describe Caze do
   let(:app) { Dummy }
 
   describe '.has_use_case' do
-    it 'delegates the use case message to the use case' do
-      allow(use_case).to receive(:the_answer)
+    it 'delegates the message to the use case' do
+      expect(use_case).to receive(:the_answer)
+
       app.the_answer
     end
 
     context 'when method has params' do
       it 'calls the method with the right params' do
         expect(app.the_answer_for('the meaning of life', priority: :high)).to eql([:high, 42])
+      end
+    end
+
+    context 'when use case class is declared as string' do
+      it 'delegates the message to the use case' do
+        expect(use_case).to receive(:the_answer_by_another_entry_point)
+
+        app.the_answer_by_another_entry_point
+      end
+    end
+
+    context 'when use case class is declared as symbol' do
+      it 'delegates the message to the use case' do
+        expect(use_case).to receive(:the_universal_answer)
+
+        app.the_universal_answer
       end
     end
 
@@ -68,6 +89,7 @@ describe Caze do
 
         it 'uses the transaction handler' do
           expect(transaction_handler).to receive(:transaction).and_yield
+
           app.the_transactional_answer
         end
       end

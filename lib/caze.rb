@@ -11,19 +11,24 @@ module Caze
     attr_accessor :transaction_handler
 
     def has_use_case(use_case_name, use_case_class, options = {})
-      transactional  = options.fetch(:transactional) { false }
+      transactional = options.fetch(:transactional) { false }
 
-      define_singleton_method(use_case_name, Proc.new { |*args|
+      define_singleton_method(use_case_name, Proc.new do |*args|
+        use_case = get_use_case_class(use_case_class)
+
         if transactional
           handler = self.transaction_handler
 
-          raise NoTransactionMethodError, "This action should be executed inside a transaction. But no transaction handler was configured." unless handler
+          unless handler
+            raise NoTransactionMethodError,
+              "This action should be executed inside a transaction. But no transaction handler was configured."
+          end
 
-          handler.transaction { use_case_class.send(use_case_name, *args) }
+          handler.transaction { use_case.send(use_case_name, *args) }
         else
-          use_case_class.send(use_case_name, *args)
+          use_case.send(use_case_name, *args)
         end
-      })
+      end)
     end
 
     def export(method_name, options = {})
@@ -33,6 +38,16 @@ module Caze
         use_case_object = args.empty? ? new : new(*args)
         use_case_object.send(method_name)
       })
+    end
+
+    private
+
+    def get_use_case_class(use_case_class)
+      if use_case_class.respond_to?(:upcase)
+        return Object.const_get(use_case_class)
+      end
+
+      use_case_class
     end
   end
 end
