@@ -1,6 +1,8 @@
 # Caze
 
-[![Build status](https://img.shields.io/travis/magnetis/caze.svg?branch=master)](https://travis-ci.org/magnetis/caze)
+[![Build status](https://img.shields.io/travis/magnetis/caze.svg)](https://travis-ci.org/magnetis/caze)
+[![Gem version](https://img.shields.io/gem/v/caze.svg)](https://rubygems.org/gems/caze)
+[![Downloads](https://img.shields.io/gem/dt/caze.svg)](https://rubygems.org/gems/caze)
 
 This is a simple DSL to declare use cases as entry points of a module.
 The purpose is to avoid the verbose declarations.
@@ -12,11 +14,11 @@ Instead of doing this:
 ```ruby
 module Project
   def self.sum(x, y)
-    UseCases::Sum.execute(x, y)
+    UseCases::Sum.sum(x, y)
   end
 
   def self.subtract(x, y)
-    UseCases::Subtract.execute(x, y)
+    UseCases::Subtract.subtract(x, y)
   end
 end
 ```
@@ -48,7 +50,7 @@ While declaring which use cases your app has, you can set the option
 `transactional` to `true`.
 
 ```ruby
-  has_use_case :wow, UseCases::Wow, transactional: true
+has_use_case :wow, UseCases::Wow, transactional: true
 ```
 
 Note that the transaction handler must implement `#transaction` and
@@ -63,8 +65,8 @@ Inside the use case classes you can use the `.export` method, so in the `UseCase
 module Project
   module UseCases
     class Sum
-      def self.execute(x ,y)
-        new(x,y).foo
+      def self.sum(x ,y)
+        new(x,y).sum
       end
 
       def initialize(x, y)
@@ -106,12 +108,21 @@ end
 The `as` param, tells how the class method must be named,
 if it is not passed the class method will have the same name of the instance method.
 
-
 With this you can call your project use cases without the need to know its internals:
 
 ```ruby
 Project.sum(4, 2) # This will call sum inside the use case `UseCases::Sum`
 ```
+
+# Installation
+
+Add to your Gemfile:
+
+```
+gem 'caze', '~> 0.4.0'
+```
+
+Run `bundle install`.
 
 # Apache License 2.0
 
