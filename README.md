@@ -57,6 +57,22 @@ Note that the transaction handler must implement `#transaction` and
 return the value inside the block. It will also be responsible for handle errors
 and rollback if necessary.
 
+
+## Using exception interceptor
+
+You can use the exception interceptor in your use case by providing a `intercept_exceptions`
+in your module in order to intercept errors and write the use case name on it.
+
+While declaring which use case your app has, you can set the option
+`intercept_exceptions` to `true`.
+
+```ruby
+has_use_case :say_my_name, UseCases::SayMyName, intercept_exceptions: true
+```
+
+It should intercept yours exceptions and write the use case name on it following the
+pattern: `SayMyName: This is you error message Heisenberg`
+
 ## Exporting instance methods as class methods
 
 Inside the use case classes you can use the `.export` method, so in the `UseCases::Sum` instead of this:

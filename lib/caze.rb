@@ -12,21 +12,30 @@ module Caze
 
     def has_use_case(use_case_name, use_case_class, options = {})
       transactional = options.fetch(:transactional) { false }
+      intercept_exceptions = options.fetch(:intercept_exceptions) { false }
 
       define_singleton_method(use_case_name, Proc.new do |*args|
         use_case = get_use_case_class(use_case_class)
 
-        if transactional
-          handler = self.transaction_handler
+        begin
+          if transactional
+            handler = self.transaction_handler
 
-          unless handler
-            raise NoTransactionMethodError,
-              "This action should be executed inside a transaction. But no transaction handler was configured."
+            unless handler
+              raise NoTransactionMethodError,
+                "This action should be executed inside a transaction. But no transaction handler was configured."
+            end
+
+            handler.transaction { use_case.send(use_case_name, *args) }
+          else
+            use_case.send(use_case_name, *args)
           end
-
-          handler.transaction { use_case.send(use_case_name, *args) }
-        else
-          use_case.send(use_case_name, *args)
+        rescue => e
+          if intercept_exceptions
+            raise "#{use_case_class}: #{e.message}"
+          else
+            raise e
+          end
         end
       end)
     end

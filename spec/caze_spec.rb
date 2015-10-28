@@ -5,7 +5,7 @@ describe Caze do
   before do
     # Removing constant definitions if they exist
     # This avoids state to be permanent through tests
-    [:DummyUseCase, :DummyUseCaseWithParam, :Dummy].each do |const|
+    [:DummyUseCase, :DummyUseCaseWithParam, :Dummy, :ExceptionRaiser].each do |const|
       Object.send(:remove_const, const) if Object.constants.include?(const)
     end
 
@@ -16,9 +16,14 @@ describe Caze do
       export :the_answer, as: :the_transactional_answer
       export :the_answer, as: :the_answer_by_another_entry_point
       export :the_answer, as: :the_universal_answer
+      export :the_question
 
       def the_answer
         42
+      end
+
+      def the_question
+        raise 'You did not say yet.'
       end
     end
 
@@ -44,6 +49,7 @@ describe Caze do
       has_use_case :the_universal_answer, :DummyUseCase
       has_use_case :the_answer_for, DummyUseCaseWithParam
       has_use_case :the_transactional_answer, DummyUseCase, transactional: true
+      has_use_case :the_question, DummyUseCase, intercept_exceptions: true
     end
   end
 
@@ -99,6 +105,16 @@ describe Caze do
           expect {
             app.the_transactional_answer
           }.to raise_error(/This action should be executed inside a transaction/)
+        end
+      end
+    end
+
+    context 'using exceptions' do
+      context 'when the use case raises an exception' do
+        it 'shows the use case name' do
+          expect {
+            app.the_question
+          }.to raise_error('DummyUseCase: You did not say yet.')
         end
       end
     end
