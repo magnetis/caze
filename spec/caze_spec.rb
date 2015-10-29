@@ -5,7 +5,7 @@ describe Caze do
   before do
     # Removing constant definitions if they exist
     # This avoids state to be permanent through tests
-    [:DummyUseCase, :DummyUseCaseWithParam, :Dummy, :ExceptionRaiser].each do |const|
+    [:DummyUseCase, :DummyUseCaseWithParam, :Dummy].each do |const|
       Object.send(:remove_const, const) if Object.constants.include?(const)
     end
 
