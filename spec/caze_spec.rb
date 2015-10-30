@@ -50,9 +50,9 @@ describe Caze do
       has_use_case :the_universal_answer, :DummyUseCase
       has_use_case :the_answer_for, DummyUseCaseWithParam
       has_use_case :the_transactional_answer, DummyUseCase, transactional: true
-      has_use_case :the_question, DummyUseCase, intercept_exceptions: true
+      has_use_case :the_question, DummyUseCase, raise_use_case_exception: true
       has_use_case :the_transactional_and_intercepted_answer, DummyUseCase, transactional: true,
-                                                                            intercept_exceptions: true
+                                                                            raise_use_case_exception: true
     end
   end
 

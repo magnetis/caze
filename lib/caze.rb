@@ -13,7 +13,7 @@ module Caze
 
     def has_use_case(use_case_name, use_case_class, options = {})
       transactional = options.fetch(:transactional) { false }
-      intercept_exceptions = options.fetch(:intercept_exceptions) { false }
+      raise_use_case_exception = options.fetch(:raise_use_case_exception) { false }
 
       define_singleton_method(use_case_name, Proc.new do |*args|
         use_case = get_use_case_class(use_case_class)
@@ -32,7 +32,7 @@ module Caze
             use_case.send(use_case_name, *args)
           end
         rescue => e
-          if intercept_exceptions
+          if raise_use_case_exception
             raise UseCaseError.new(e).exception("#{use_case_class}: #{e.message}")
           else
             raise e
