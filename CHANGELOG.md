@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.1.1] - 2015-10-30
+
+### Added
+
+- Add support to raise errors with the use case name.
+
 ## [0.1.0] - 2015-10-20
 
 ### Added

@@ -16,9 +16,15 @@ describe Caze do
       export :the_answer, as: :the_transactional_answer
       export :the_answer, as: :the_answer_by_another_entry_point
       export :the_answer, as: :the_universal_answer
+      export :the_answer, as: :the_transactional_and_intercepted_answer
+      export :the_question
 
       def the_answer
         42
+      end
+
+      def the_question
+        raise 'You did not say yet.'
       end
     end
 
@@ -44,6 +50,9 @@ describe Caze do
       has_use_case :the_universal_answer, :DummyUseCase
       has_use_case :the_answer_for, DummyUseCaseWithParam
       has_use_case :the_transactional_answer, DummyUseCase, transactional: true
+      has_use_case :the_question, DummyUseCase, raise_use_case_exception: true
+      has_use_case :the_transactional_and_intercepted_answer, DummyUseCase, transactional: true,
+                                                                            raise_use_case_exception: true
     end
   end
 
@@ -99,6 +108,26 @@ describe Caze do
           expect {
             app.the_transactional_answer
           }.to raise_error(/This action should be executed inside a transaction/)
+        end
+      end
+    end
+
+    context 'using exception' do
+      context 'when the use case raises an exception' do
+        it 'shows the use case name' do
+          expect {
+            app.the_question
+          }.to raise_error('DummyUseCase: You did not say yet.')
+        end
+      end
+    end
+
+    context 'using exception and transaction' do
+      context 'when the use case raises the transaction exception' do
+        it 'shows the use case name' do
+          expect {
+            app.the_transactional_and_intercepted_answer
+          }.to raise_error(/DummyUseCase: This action should be executed inside a transaction/)
         end
       end
     end
