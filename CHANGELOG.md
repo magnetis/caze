@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-- Add support to raise erros with the use case name.
+- Add support to raise errors with the use case name.
 
 ## [0.1.0] - 2015-10-20
 
