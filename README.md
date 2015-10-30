@@ -60,14 +60,14 @@ and rollback if necessary.
 
 ## Using exception interceptor
 
-You can use the exception interceptor in your use case by providing a `intercept_exceptions`
-in your module in order to intercept errors and write the use case name on it.
+You can use the raise use case exception in order to know the use case name when an
+error happen.
 
 While declaring which use case your app has, you can set the option
-`intercept_exceptions` to `true`.
+`raise_use_case_exception` to `true`.
 
 ```ruby
-has_use_case :say_my_name, UseCases::SayMyName, intercept_exceptions: true
+has_use_case :say_my_name, UseCases::SayMyName, raise_use_case_exception: true
 ```
 
 It should intercept yours exceptions and write the use case name on it following the
