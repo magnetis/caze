@@ -5,7 +5,7 @@ describe Caze do
   before do
     # Removing constant definitions if they exist
     # This avoids state to be permanent through tests
-    [:DummyUseCase, :DummyUseCaseWithParam, :Dummy].each do |const|
+    [:DummyUseCase, :DummyUseCaseWithParam, :Dummy, :DummyUseCaseTest].each do |const|
       Object.send(:remove_const, const) if Object.constants.include?(const)
     end
 
@@ -42,6 +42,22 @@ describe Caze do
       end
     end
 
+    class DummyUseCaseTest
+      include Caze
+
+      export :the_question
+
+      def the_question
+        raise 'We do not know the question'
+      end
+    end
+
+    module DummyNamespace
+      include Caze
+
+      has_use_case :the_question, DummyUseCaseTest, raise_use_case_exception: true
+    end
+
     module Dummy
       include Caze
 
@@ -58,6 +74,7 @@ describe Caze do
 
   let(:use_case) { DummyUseCase }
   let(:app) { Dummy }
+  let(:namespaced_use_case) { DummyNamespace }
 
   describe '.has_use_case' do
     it 'delegates the message to the use case' do
@@ -114,10 +131,17 @@ describe Caze do
 
     context 'using exception' do
       context 'when the use case raises an exception' do
-        it 'shows the use case name' do
+        it 'raises with the namespace of the use case' do
+          begin
+            namespaced_use_case.the_question
+          rescue Exception => e
+            expect(e.class.name).to eq('DummyUseCaseTest::RuntimeError')
+          end
+
           expect {
-            app.the_question
-          }.to raise_error('DummyUseCase: You did not say yet.')
+            namespaced_use_case.the_question
+          }.to raise_error
+
         end
       end
     end
@@ -127,7 +151,7 @@ describe Caze do
         it 'shows the use case name' do
           expect {
             app.the_transactional_and_intercepted_answer
-          }.to raise_error(/DummyUseCase: This action should be executed inside a transaction/)
+          }.to raise_error(Caze::NoTransactionMethodError, "This action should be executed inside a transaction. But no transaction handler was configured.")
         end
       end
     end

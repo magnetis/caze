@@ -5,7 +5,6 @@ require 'active_support/core_ext/module/delegation'
 
 module Caze
   class NoTransactionMethodError < StandardError; end
-  class UseCaseError < StandardError; end
   extend ActiveSupport::Concern
 
   module ClassMethods
@@ -33,7 +32,7 @@ module Caze
           end
         rescue => e
           if raise_use_case_exception
-            raise UseCaseError.new(e).exception("#{use_case_class}: #{e.message}")
+            raise raise_use_case_error(use_case, e)
           else
             raise e
           end
@@ -58,6 +57,21 @@ module Caze
       end
 
       use_case_class
+    end
+
+    def raise_use_case_error(use_case, error)
+
+      demodulized_error_class = error.class.name.split('::').last
+
+      base_class = Class.new(error.class) do 
+        define_singleton_method :name do 
+          "#{use_case}::#{demodulized_error_class}"
+        end
+      end
+                
+      error_class = use_case.const_set(demodulized_error_class, base_class)
+
+      raise error_class, error.message
     end
   end
 end
