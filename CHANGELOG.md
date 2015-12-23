@@ -29,6 +29,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Change main methods to define use cases and export them.
 - Add more details about the API and how to use the lib at README.
 
-[unreleased]: https://github.com/magnetis/caze/compare/v0.0.4...HEAD
+[unreleased]: https://github.com/magnetis/caze/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/magnetis/caze/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/magnetis/caze/compare/v0.0.4...v0.1.0
 [0.0.4]: https://github.com/magnetis/caze/compare/v0.0.3...v0.0.4
 [0.0.3]: https://github.com/magnetis/caze/compare/v0.0.2...v0.0.3
