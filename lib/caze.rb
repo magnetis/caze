@@ -59,13 +59,15 @@ module Caze
       use_case_class
     end
 
+    # This method intends to raise the error inside the context of the use case
+    # So we can have a more specific
     def raise_use_case_error(use_case, error)
 
       demodulized_error_class = error.class.name.split('::').last
 
       base_class = Class.new(error.class) do 
         define_singleton_method :name do 
-          "#{use_case}::#{demodulized_error_class}"
+          "#{use_case}::#{error.class}"
         end
       end
                 
