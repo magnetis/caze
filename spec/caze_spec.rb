@@ -132,16 +132,9 @@ describe Caze do
     context 'using exception' do
       context 'when the use case raises an exception' do
         it 'raises with the namespace of the use case' do
-          begin
-            namespaced_use_case.the_question
-          rescue Exception => e
-            expect(e.class.name).to eq('DummyUseCaseTest::RuntimeError')
-          end
-
           expect {
             namespaced_use_case.the_question
-          }.to raise_error
-
+          }.to raise_error(DummyUseCaseTest::RuntimeError)
         end
       end
     end
