@@ -3,11 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.2.0] - 2016-1-7
+## [0.2.0] - 2016-01-07
 
 ### Change
 
 - Raise errors from inside the use case context, so we can have names easier to identify.
+- Add the complete backtrace to the raised error
 
 ## [0.1.1] - 2015-10-30
 
