@@ -81,8 +81,8 @@ Inside the use case classes you can use the `.export` method, so in the `UseCase
 module Project
   module UseCases
     class Sum
-      def self.sum(x ,y)
-        new(x,y).sum
+      def self.sum(x, y)
+        new(x, y).sum
       end
 
       def initialize(x, y)
