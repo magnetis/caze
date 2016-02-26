@@ -2,13 +2,19 @@ require 'spec_helper'
 require 'caze'
 
 describe Caze do
+
   before do
     # Removing constant definitions if they exist
     # This avoids state to be permanent through tests
-    [:DummyUseCase, :DummyUseCaseWithParam, :Dummy, :DummyUseCaseTest].each do |const|
+    [:DummyUseCase,
+     :DummyUseCaseWithParam,
+     :Dummy,
+     :DummyError,
+     :DummyUseCaseTest].each do |const|
       Object.send(:remove_const, const) if Object.constants.include?(const)
     end
 
+    class DummyError < StandardError; end
     class DummyUseCase
       include Caze
 
@@ -48,7 +54,7 @@ describe Caze do
       export :the_question
 
       def the_question
-        raise 'We do not know the question'
+        raise DummyError.new("We don't know the question")
       end
     end
 
@@ -134,7 +140,7 @@ describe Caze do
         it 'raises with the namespace of the use case' do
           expect {
             namespaced_use_case.the_question
-          }.to raise_error(DummyUseCaseTest::RuntimeError)
+          }.to raise_error(DummyUseCaseTest::DummyError)
         end
       end
     end
