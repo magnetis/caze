@@ -68,10 +68,11 @@ module Caze
 
       error_class = use_case.const_set(demodulized_error_class, base_class)
 
-      error_instance = error_class.new(error.message)
-      error_instance.set_backtrace(error.backtrace)
+      error.define_singleton_method(:class) do
+        error_class
+      end
 
-      raise error_instance
+      raise error
     end
   end
 end
