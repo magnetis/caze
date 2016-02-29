@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.1] - 2016-02-29
+
+### Change
+
+- Change the way we raise the errors with the `raise_use_case_exception` option:
+it does not instantiate the error again, but changes the parent class reference.
+
 ## [0.2.0] - 2016-01-07
 
 ### Change
@@ -36,7 +43,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Change main methods to define use cases and export them.
 - Add more details about the API and how to use the lib at README.
 
-[unreleased]: https://github.com/magnetis/caze/compare/v0.2.0...HEAD
+[unreleased]: https://github.com/magnetis/caze/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/magnetis/caze/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/magnetis/caze/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/magnetis/caze/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/magnetis/caze/compare/v0.0.4...v0.1.0
