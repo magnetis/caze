@@ -1,11 +1,10 @@
 # frozen_string_literal: true
-require 'thor'
-
 module Caze
-  module CazeGenerator
+  module Generator
     # Public: Caze CLI, this is the class that will generate the use case class
     # for each user
-    class CLI < Thor
+    autoload :Parser, 'caze/generator/parser'
+    class CLI < Thor::Group
       # Command `generate`:
       # params:
       #   - file: engine:some_engine:some_use_case_module:class_name
@@ -19,13 +18,13 @@ module Caze
       # option :action, type: :string, aliases: :a
       # option :test_framework, type: :string, aliases: [:t, :test]
       # option :root_path, type: :string, aliases: [:rp, :p]
-      def generate(file, attributes)
-        # TODO: to be implemented
-        puts "File: #{file}"
-        puts "Attributes: #{attributes}"
+      def generate(namespaced_file, attributes)
+        file_path = Parser.namespace_to_path(namespaced_file)
+        spec_file_path = Parser.namespace_to_spec_path(namespaced_file)
+
+        built_attributes = Parser.build_attributes(attributes)
       end
     end
   end
 end
 
-Caze::CazeGenerator::CLI.start(ARGV)
