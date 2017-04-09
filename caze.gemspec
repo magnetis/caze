@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
 
   spec.bindir = 'exe'
   spec.executables = ['caze']
-  spec.required_ruby_version = '>= 2.2.2'
+  spec.required_ruby_version = '>= 2.0.0'
 
   spec.add_development_dependency 'bundler', '~> 1.6'
   spec.add_development_dependency 'rake'
@@ -27,5 +27,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry'
 
   spec.add_dependency 'thor'
-  spec.add_dependency 'activesupport', '>= 3'
+  if RUBY_VERSION < '2.2.2'
+    spec.add_dependency 'activesupport', '< 5'
+  else
+    spec.add_dependency 'activesupport', '>= 3'
+  end
 end
