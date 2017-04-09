@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Caze::VERSION
   spec.authors       = ['Philip Sampaio', 'Fabiano Beselga']
   spec.email         = ['philip@magnetis.com.br', 'fabiano@magnetis.com.br']
-  spec.summary       = %q{A DSL to define use cases}
-  spec.description   = %q{With Caze it's easy to define use cases and entry points.}
+  spec.summary       = %(A DSL to define use cases)
+  spec.description   = %({With Caze it's easy to define use cases and entry points.)
   spec.homepage      = 'https://github.com/magnetis/caze'
   spec.license       = 'Apache License 2.0'
 
@@ -27,6 +27,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry'
 
   spec.add_dependency 'thor'
-  active_support_version =  RUBY_VERSION < '2.2.2' ? '< 5' : '>= 3'
+  active_support_version = RUBY_VERSION < '2.2.2' ? '< 5' : '>= 3'
   spec.add_dependency 'activesupport', active_support_version
 end
