@@ -1,3 +1,4 @@
  #!/usr/bin/env ruby
 
 require 'caze/generator'
+Caze::Generator.start_generator
