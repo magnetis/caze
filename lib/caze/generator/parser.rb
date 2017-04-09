@@ -3,32 +3,31 @@
 module Caze
   module Generator
     class Parser
+
+      autoload :BuildFileStructure, 'caze/generator/parser/build_file_structure'
+
       class << self
-        def namespace_to_path(namespace)
-          _build_file_path_structure namespace
+        def namespace_to_path(namespace, test_framework)
+          _build_file_path_structure namespace, test_framework
         end
 
         private
 
-        def _build_file_path_structure(namespace)
+        def _build_file_path_structure(namespace, test_framework)
           namespaces = namespace.split(':').map(&:to_sym)
           path_type = _pluralize(_resolve_path_type(namespaces))
           dependency_loc = _resolve_dependency_location(namespaces, path_type)
           internal_namespaces = _resolve_internal_namespaces(namespaces)
           file_name = namespaces.first
-          path = _resolve_path(
+
+          builder = BuildFileStructure.new(
             path_type,
             dependency_loc,
             internal_namespaces,
-            file_name
+            file_name,
+            test_framework
           )
-          {
-            type: path_type,
-            dependency_loc: dependency_loc,
-            internal_namespaces: internal_namespaces,
-            file_name: file_name,
-            full_path: path
-          }
+          builder.build
         end
 
         def known_path?(path_type)
@@ -40,28 +39,6 @@ module Caze
             :modules,
             :module
           ].include? path_type
-        end
-
-        def _resolve_path(path_type, dependency_loc, internal_namespaces, file_name)
-          return _resolve_known_path(
-            path_type,
-            dependency_loc,
-            internal_namespaces,
-            file_name
-          ) if known_path? path_type
-
-          "lib/#{internal_namespaces}#{file_name}.rb"
-        end
-
-        def _resolve_known_path(path_type,
-                                dependency_name,
-                                internal_namespaces,
-                                file_name)
-          if path_type == :modules
-            "app/#{path_type}/#{dependency_name}/#{internal_namespaces}#{file_name}.rb"
-          else
-            "#{path_type}/#{dependency_name}/lib/#{dependency_name}/#{internal_namespaces}#{file_name}.rb"
-          end
         end
 
         def _resolve_path_type(namespaces)

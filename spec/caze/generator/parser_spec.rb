@@ -6,7 +6,7 @@ module Caze
     describe Parser do
       describe '.namespace_to_path' do
         subject(:namespace_to_path) do
-          described_class.namespace_to_path(namespace)
+          described_class.namespace_to_path(namespace, :rspec)
         end
         context 'when the path is from a gem' do
           let(:namespace) do

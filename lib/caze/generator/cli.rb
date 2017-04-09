@@ -13,9 +13,18 @@ module Caze
       class_option :test_framework, default: :rspec
 
       def generate(namespace)
-        file_path_structure = Parser.namespace_to_path(namespace)
+        file_path_structure = Parser.namespace_to_path(
+          namespace,
+          options.fetch(:test_framework)
+        )
 
+        # Create main file
         create_file file_path_structure[:full_path] do
+          '#TODO: Implement logic to generate files'
+        end
+
+        # Create test file
+        create_file file_path_structure[:test_path] do
           '#TODO: Implement logic to generate files'
         end
       end
