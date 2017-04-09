@@ -11,15 +11,15 @@ module Caze
         end
         context 'when the path is from a gem' do
           let(:namespace) do
-            'gems:broker_service:easynvest:api:post_personal_data'
+            'gems:my_gem:partner:api:post_data'
           end
           let(:path_structure) do
             {
-              dependency_loc: :broker_service,
-              file_name: :post_personal_data,
-              full_path: 'gems/broker_service/lib/broker_service/easynvest/api/post_personal_data.rb',
-              test_path: 'gems/broker_service/spec/broker_service/easynvest/api/post_personal_data_spec.rb',
-              internal_namespaces: 'easynvest/api/',
+              dependency_loc: :my_gem,
+              file_name: :post_data,
+              full_path: 'gems/my_gem/lib/my_gem/partner/api/post_data.rb',
+              test_path: 'gems/my_gem/spec/my_gem/partner/api/post_data_spec.rb',
+              internal_namespaces: 'partner/api/',
               type: :gems
             }
           end
@@ -31,15 +31,15 @@ module Caze
 
         context 'when the path is from an engine' do
           let(:namespace) do
-            'engine:pricing:use_cases:calculate_category_amount'
+            'engine:my_engine:use_cases:calculate_price'
           end
 
           let(:path_structure) do
             {
-              dependency_loc: :pricing,
-              file_name: :calculate_category_amount,
-              full_path: 'engines/pricing/lib/pricing/use_cases/calculate_category_amount.rb',
-              test_path: 'engines/pricing/spec/pricing/use_cases/calculate_category_amount_spec.rb',
+              dependency_loc: :my_engine,
+              file_name: :calculate_price,
+              full_path: 'engines/my_engine/lib/my_engine/use_cases/calculate_price.rb',
+              test_path: 'engines/my_engine/spec/my_engine/use_cases/calculate_price_spec.rb',
               internal_namespaces: 'use_cases/',
               type: :engines
             }
@@ -52,15 +52,15 @@ module Caze
 
         context 'when the path is from an app module' do
           let(:namespace) do
-            'modules:accounting_cache:write_investments_cache'
+            'modules:my_cache:write_my_cache'
           end
 
           let(:path_structure) do
             {
-              dependency_loc: :accounting_cache,
-              file_name: :write_investments_cache,
-              full_path: 'app/modules/accounting_cache/write_investments_cache.rb',
-              test_path: 'spec/modules/accounting_cache/write_investments_cache_spec.rb',
+              dependency_loc: :my_cache,
+              file_name: :write_my_cache,
+              full_path: 'app/modules/my_cache/write_my_cache.rb',
+              test_path: 'spec/modules/my_cache/write_my_cache_spec.rb',
               internal_namespaces: '',
               type: :modules
             }
