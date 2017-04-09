@@ -3,12 +3,14 @@ require 'thor'
 
 module Caze
   module Generator
-    # Public: Module responsible for generating use case files
     autoload :Parser, 'caze/generator/parser'
+
+    # Internal: Class responsible for inheriting `Thor`'s behaviour
+    # and declaring the command methods
     class CLI < Thor
       include Thor::Actions
       desc 'generate file',
-        'generates file and creates the class with its attributes'
+           'generates file and creates the class with its attributes'
       # Define arguments and options
       class_option :test_framework, default: :rspec
 
