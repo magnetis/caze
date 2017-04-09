@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'caze/generator'
 require 'caze/generator/parser'
 
 module Caze
@@ -17,6 +18,7 @@ module Caze
               dependency_loc: :broker_service,
               file_name: :post_personal_data,
               full_path: 'gems/broker_service/lib/broker_service/easynvest/api/post_personal_data.rb',
+              test_path: 'gems/broker_service/spec/broker_service/easynvest/api/post_personal_data_spec.rb',
               internal_namespaces: 'easynvest/api/',
               type: :gems
             }
@@ -37,6 +39,7 @@ module Caze
               dependency_loc: :pricing,
               file_name: :calculate_category_amount,
               full_path: 'engines/pricing/lib/pricing/use_cases/calculate_category_amount.rb',
+              test_path: 'engines/pricing/spec/pricing/use_cases/calculate_category_amount_spec.rb',
               internal_namespaces: 'use_cases/',
               type: :engines
             }
@@ -57,6 +60,7 @@ module Caze
               dependency_loc: :accounting_cache,
               file_name: :write_investments_cache,
               full_path: 'app/modules/accounting_cache/write_investments_cache.rb',
+              test_path: 'spec/modules/accounting_cache/write_investments_cache_spec.rb',
               internal_namespaces: '',
               type: :modules
             }
@@ -76,6 +80,7 @@ module Caze
               dependency_loc: :main_app,
               file_name: :parse_spec_namespace,
               full_path: 'lib/caze/generator/parse_spec_namespace.rb',
+              test_path: 'spec/caze/generator/parse_spec_namespace_spec.rb',
               internal_namespaces: 'caze/generator/',
               type: :app
             }

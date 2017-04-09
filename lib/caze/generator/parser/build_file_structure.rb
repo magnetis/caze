@@ -45,7 +45,7 @@ module Caze
           return _resolve_known_path if known_path? path_type
 
           { path: "lib/#{internal_namespaces}#{file_name}.rb",
-            test_path: "#{test_namespace}/#{internal_namespaces}#{file_name}_spec.rb" }
+            test_path: "#{test_namespace}/#{internal_namespaces}#{file_name}_#{test_namespace}.rb" }
         end
 
         def _resolve_known_path
@@ -62,22 +62,24 @@ module Caze
           path_beginning = [
             path_namespace,
             path_type,
-            dependency_name,
-            internal_namespacess
+            dependency_location,
+            internal_namespaces
           ].join('/')
-
-          "#{path_beginning}#{file_name}.rb".freeze
+          testing = path_namespace == test_namespace ? "_#{test_namespace}" : ''
+          "#{path_beginning}#{file_name}#{testing}.rb".freeze
         end
 
         def _path(path_namespace = test_namespace)
           path_beginning = [
             path_type,
-            dependency_name,
+            dependency_location,
             path_namespace,
+            dependency_location,
             internal_namespaces
           ].join('/')
 
-          "#{path_beginning}#{file_name}.rb".freeze
+          testing = path_namespace == test_namespace ? "_#{test_namespace}" : ''
+          "#{path_beginning}#{file_name}#{testing}.rb".freeze
         end
 
         def test_namespace

@@ -13,6 +13,10 @@ module Caze
 
         private
 
+        def known_path?(path_type)
+          Generator.known_path? path_type
+        end
+
         def _build_file_path_structure(namespace, test_framework)
           namespaces = namespace.split(':').map(&:to_sym)
           path_type = _pluralize(_resolve_path_type(namespaces))
@@ -28,17 +32,6 @@ module Caze
             test_framework
           )
           builder.build
-        end
-
-        def known_path?(path_type)
-          [
-            :engine,
-            :engines,
-            :gem,
-            :gems,
-            :modules,
-            :module
-          ].include? path_type
         end
 
         def _resolve_path_type(namespaces)
