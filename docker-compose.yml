@@ -1,0 +1,6 @@
+gems:
+  build: .
+  env_file: .env
+  volumes:
+    - .:/caze
+    - /gems
