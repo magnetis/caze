@@ -29,5 +29,4 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'thor'
   active_support_version =  RUBY_VERSION < '2.2.2' ? '< 5' : '>= 3'
   spec.add_dependency 'activesupport', active_support_version
-  end
 end
