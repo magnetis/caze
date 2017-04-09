@@ -9,10 +9,11 @@ module Caze
     # and declaring the command methods
     class CLI < Thor
       include Thor::Actions
-      desc 'generate file',
-           'generates file and creates the class with its attributes'
+      desc 'bundle exec caze generate engine:my_engine:my_use_case:my_class --test-framework unit_test',
+           'Geenerates use case files with test',
+           'options: test-framework default: :rspec'
       # Define arguments and options
-      class_option :test_framework, default: :rspec
+      class_option :test_framework, default: :rspec, aliases: :t
 
       def generate(namespace)
         file_path_structure = Parser.namespace_to_path(
