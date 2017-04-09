@@ -8,7 +8,7 @@ module Caze
 
       class << self
         def namespace_to_path(namespace, test_framework)
-          _build_file_path_structure namespace, test_framework
+          build_file_path_structure namespace, test_framework
         end
 
         private
@@ -17,11 +17,11 @@ module Caze
           Generator.known_path? path_type
         end
 
-        def _build_file_path_structure(namespace, test_framework)
+        def build_file_path_structure(namespace, test_framework)
           namespaces = namespace.split(':').map(&:to_sym)
-          path_type = _pluralize(_resolve_path_type(namespaces))
-          dependency_loc = _resolve_dependency_location(namespaces, path_type)
-          internal_namespaces = _resolve_internal_namespaces(namespaces)
+          path_type = pluralize(resolve_path_type(namespaces))
+          dependency_loc = resolve_dependency_location(namespaces, path_type)
+          internal_namespaces = resolve_internal_namespaces(namespaces)
           file_name = namespaces.first
 
           builder = BuildFileStructure.new(
@@ -34,19 +34,19 @@ module Caze
           builder.build
         end
 
-        def _resolve_path_type(namespaces)
+        def resolve_path_type(namespaces)
           path_type = namespaces.first
           return namespaces.delete_at(0) if known_path? path_type
 
           :app
         end
 
-        def _resolve_dependency_location(namespaces, path_type)
+        def resolve_dependency_location(namespaces, path_type)
           return namespaces.delete_at(0) if known_path? path_type
           :main_app
         end
 
-        def _resolve_internal_namespaces(namespaces)
+        def resolve_internal_namespaces(namespaces)
           n = namespaces.count
           return '' if n <= 1
           r = ''
@@ -60,7 +60,7 @@ module Caze
           r
         end
 
-        def _pluralize(path_type)
+        def pluralize(path_type)
           return "#{path_type}s".to_sym if [:gem, :engine, :module].include? path_type
           path_type
         end

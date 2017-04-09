@@ -24,8 +24,8 @@ module Caze
             dependency_loc: dependency_location,
             internal_namespaces: internal_namespaces,
             file_name: file_name,
-            full_path: _resolve_path[:path],
-            test_path: _resolve_path[:test_path]
+            full_path: resolve_path[:path],
+            test_path: resolve_path[:test_path]
           }
         end
 
@@ -41,24 +41,24 @@ module Caze
                     :file_name,
                     :test_framework
 
-        def _resolve_path
-          return _resolve_known_path if known_path? path_type
+        def resolve_path
+          return resolve_known_path if known_path? path_type
 
           { path: "lib/#{internal_namespaces}#{file_name}.rb",
             test_path: "#{test_namespace}/#{internal_namespaces}#{file_name}_#{test_namespace}.rb" }
         end
 
-        def _resolve_known_path
+        def resolve_known_path
           if path_type == :modules
-            { path: _modules_path('app'),
-              test_path: _modules_path }
+            { path: modules_path('app'),
+              test_path: modules_path }
           else
-            { path: _path('lib'),
-              test_path: _path }
+            { path: path('lib'),
+              test_path: path }
           end
         end
 
-        def _modules_path(path_namespace = test_namespace)
+        def modules_path(path_namespace = test_namespace)
           path_beginning = [
             path_namespace,
             path_type,
@@ -69,7 +69,7 @@ module Caze
           "#{path_beginning}#{file_name}#{testing}.rb".freeze
         end
 
-        def _path(path_namespace = test_namespace)
+        def path(path_namespace = test_namespace)
           path_beginning = [
             path_type,
             dependency_location,
