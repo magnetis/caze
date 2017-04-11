@@ -49,15 +49,13 @@ module Caze
         def resolve_internal_namespaces(namespaces)
           n = namespaces.count
           return '' if n <= 1
-          r = ''
-          i = 0
+          namespace = ''
           while n > 1
-            val = namespaces.delete_at 0
-            r += "#{val}/"
+            namespace += "#{namespaces.delete_at 0}/"
             i += 1
             n = namespaces.count
           end
-          r
+          namespace
         end
 
         def pluralize(path_type)
