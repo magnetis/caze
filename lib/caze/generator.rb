@@ -6,7 +6,7 @@ module Caze
     autoload :CLI, 'caze/generator/cli'
 
     class << self
-      def start_generator
+      def start
         CLI.start
       end
 
