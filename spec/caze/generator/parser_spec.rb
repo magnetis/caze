@@ -15,12 +15,12 @@ module Caze
           end
           let(:path_structure) do
             {
-              dependency_loc: :my_gem,
+              dependency_namespace: :my_gem,
               file_name: :post_data,
               full_path: 'gems/my_gem/lib/my_gem/partner/api/post_data.rb',
               test_path: 'gems/my_gem/spec/my_gem/partner/api/post_data_spec.rb',
-              internal_namespaces: 'partner/api/',
-              type: :gems
+              internal_modules: 'partner/api/',
+              dependency_type: :gems
             }
           end
 
@@ -36,12 +36,12 @@ module Caze
 
           let(:path_structure) do
             {
-              dependency_loc: :my_engine,
+              dependency_namespace: :my_engine,
               file_name: :calculate_price,
               full_path: 'engines/my_engine/lib/my_engine/use_cases/calculate_price.rb',
               test_path: 'engines/my_engine/spec/my_engine/use_cases/calculate_price_spec.rb',
-              internal_namespaces: 'use_cases/',
-              type: :engines
+              internal_modules: 'use_cases/',
+              dependency_type: :engines
             }
           end
 
@@ -57,12 +57,12 @@ module Caze
 
           let(:path_structure) do
             {
-              dependency_loc: :my_cache,
+              dependency_namespace: :my_cache,
               file_name: :write_my_cache,
               full_path: 'app/modules/my_cache/write_my_cache.rb',
               test_path: 'spec/modules/my_cache/write_my_cache_spec.rb',
-              internal_namespaces: '',
-              type: :modules
+              internal_modules: '',
+              dependency_type: :modules
             }
           end
 
@@ -77,12 +77,12 @@ module Caze
           end
           let(:path_structure) do
             {
-              dependency_loc: :main_app,
+              dependency_namespace: :main_app,
               file_name: :parse_spec_namespace,
               full_path: 'lib/caze/generator/parse_spec_namespace.rb',
               test_path: 'spec/caze/generator/parse_spec_namespace_spec.rb',
-              internal_namespaces: 'caze/generator/',
-              type: :app
+              internal_modules: 'caze/generator/',
+              dependency_type: :app
             }
           end
 

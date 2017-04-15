@@ -2,13 +2,13 @@
 
 module Caze
   module Generator
+    # Internal: Class responsible for parsing the namespace given to a path
     class Parser
-
       autoload :BuildFileStructure, 'caze/generator/parser/build_file_structure'
 
       class << self
         def namespace_to_path(namespace, test_framework)
-          build_file_path_structure namespace, test_framework
+          build_file_path_structure(namespace, test_framework)
         end
 
         private
@@ -19,43 +19,45 @@ module Caze
 
         def build_file_path_structure(namespace, test_framework)
           namespaces = namespace.split(':').map(&:to_sym)
-          path_type = pluralize(resolve_path_type(namespaces))
-          dependency_loc = resolve_dependency_location(namespaces, path_type)
-          internal_namespaces = resolve_internal_namespaces(namespaces)
+          dependency_type = resolve_dependency_type(namespaces)
+          dependency_type = pluralize(dependency_type)
+          dependency_namespace = resolve_dependency_namespace(namespaces, dependency_type)
+          internal_modules = resolve_internal_modules(namespaces)
           file_name = namespaces.first
 
-          builder = BuildFileStructure.new(
-            path_type,
-            dependency_loc,
-            internal_namespaces,
+          builder = Parser::BuildFileStructure.new(
+            dependency_type,
+            dependency_namespace,
+            internal_modules,
             file_name,
             test_framework
           )
+
           builder.build
         end
 
-        def resolve_path_type(namespaces)
-          path_type = namespaces.first
-          return namespaces.delete_at(0) if known_path? path_type
+        def resolve_dependency_type(namespaces)
+          dep_type = namespaces.first
+          return namespaces.delete_at(0) if known_path? dep_type
 
           :app
         end
 
-        def resolve_dependency_location(namespaces, path_type)
-          return namespaces.delete_at(0) if known_path? path_type
+        def resolve_dependency_namespace(namespaces, dependency_type)
+          return namespaces.delete_at(0) if known_path? dependency_type
           :main_app
         end
 
-        def resolve_internal_namespaces(namespaces)
+        def resolve_internal_modules(namespaces)
           n = namespaces.count
           return '' if n <= 1
-          namespace = ''
+
+          modules = ''
           while n > 1
-            namespace += "#{namespaces.delete_at 0}/"
-            i += 1
+            modules += "#{namespaces.delete_at 0}/"
             n = namespaces.count
           end
-          namespace
+          modules
         end
 
         def pluralize(path_type)
