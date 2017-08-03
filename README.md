@@ -130,6 +130,17 @@ With this you can call your project use cases without the need to know its inter
 Project.sum(4, 2) # This will call sum inside the use case `UseCases::Sum`
 ```
 
+## Using Use Case Generator
+
+This module `Caze::Generator` can generate new use cases based on the path that you add. Lets say you want to create a new use case called `CoolUseCase` located on engine `MyCoolEngine`, you would have to run on the shell:
+
+```ruby
+$ bundle exec caze generate engine:my_cool_engine:my_cool_use_case
+# => Generator will create 2 new files
+# 1. engines/my_cool_engine/lib/my_cool_engine/my_cool_use_case.rb
+# 2. `engines/my_cool_engine/spec/my_cool_engine/my_cool_use_case_spec.rb
+```
+
 # Installation
 
 Add to your Gemfile:
