@@ -7,8 +7,10 @@ module Caze
     describe Parser do
       describe '.namespace_to_path' do
         subject(:namespace_to_path) do
-          described_class.namespace_to_path(namespace, :rspec)
+          described_class.namespace_to_path(namespace, test_dependency)
         end
+
+        let(:test_dependency) { :rspec }
         context 'when the path is from a gem' do
           let(:namespace) do
             'gems:my_gem:partner:api:post_data'
@@ -82,6 +84,27 @@ module Caze
               full_path: 'lib/caze/generator/parse_spec_namespace.rb',
               test_path: 'spec/caze/generator/parse_spec_namespace_spec.rb',
               internal_modules: 'caze/generator/',
+              dependency_type: :app
+            }
+          end
+
+          it 'returns the correct path structure' do
+            expect(namespace_to_path).to eq(path_structure)
+          end
+        end
+
+        context 'when the path is from the main app' do
+          let(:namespace) do
+            'parse_spec_namespace'
+          end
+
+          let(:path_structure) do
+            {
+              dependency_namespace: :main_app,
+              file_name: :parse_spec_namespace,
+              full_path: 'lib/parse_spec_namespace.rb',
+              test_path: 'spec/parse_spec_namespace_spec.rb',
+              internal_modules: '',
               dependency_type: :app
             }
           end
