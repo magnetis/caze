@@ -140,7 +140,11 @@ describe Caze do
         it 'raises with the namespace of the use case' do
           expect {
             namespaced_use_case.the_question
-          }.to raise_error(DummyUseCaseTest::DummyError)
+          }.to raise_error do |error|
+            expect(error).to be_a(DummyUseCaseTest::DummyError)
+            expect(error.cause).to be_a(::DummyError)
+            expect(error.backtrace.first).to match(/in `the_question'/)
+          end
         end
       end
     end
