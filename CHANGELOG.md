@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- Fixed how the exceptions constants are created when `raise_use_case_exception`
+  is on. The exceptions will inherit from `StandardError`, live under the
+  use case constant and won't throw any already initialized constant warnings.
+
 ## [0.2.1] - 2016-02-29
 
 ### Change
