@@ -30,6 +30,8 @@ module Caze
           else
             use_case.send(use_case_name, *args)
           end
+        rescue NoTransactionMethodError
+          raise
         rescue => e
           if raise_use_case_exception
             raise raise_use_case_error(use_case, e)
@@ -62,17 +64,21 @@ module Caze
     # This method intends to inject the error inside the context of the use case,
     # so we can identify the use case from it was raised
     def raise_use_case_error(use_case, error)
-      demodulized_error_class = error.class.name.split('::').last
+      name = error.class.name.split('::').last
 
-      base_class = Class.new(error.class)
+      klass = define_use_case_error(use_case, name)
+      wrapped = klass.new(error.message)
+      wrapped.set_backtrace(error.backtrace)
 
-      error_class = use_case.const_set(demodulized_error_class, base_class)
+      raise wrapped
+    end
 
-      error.define_singleton_method(:class) do
-        error_class
+    def define_use_case_error(use_case, name)
+      unless use_case.const_defined?(name, false)
+        klass = Class.new(StandardError)
+        use_case.const_set(name, klass)
       end
-
-      raise error
+      use_case.const_get(name)
     end
   end
 end
