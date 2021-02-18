@@ -14,7 +14,7 @@ module Caze
       transactional = options.fetch(:transactional) { false }
       raise_use_case_exception = options.fetch(:raise_use_case_exception) { false }
 
-      define_singleton_method(use_case_name, Proc.new do |*args|
+      define_singleton_method(use_case_name, Proc.new do |*args, **kwargs|
         use_case = get_use_case_class(use_case_class)
 
         begin
@@ -26,9 +26,9 @@ module Caze
                 "This action should be executed inside a transaction. But no transaction handler was configured."
             end
 
-            handler.transaction { use_case.send(use_case_name, *args) }
+            handler.transaction { use_case.send(use_case_name, *args, **kwargs) }
           else
-            use_case.send(use_case_name, *args)
+            use_case.send(use_case_name, *args, **kwargs)
           end
         rescue NoTransactionMethodError
           raise
@@ -45,8 +45,8 @@ module Caze
     def export(method_name, options = {})
       method_to_define = options.fetch(:as) { method_name }
 
-      define_singleton_method(method_to_define, Proc.new { |*args|
-        use_case_object = args.empty? ? new : new(*args)
+      define_singleton_method(method_to_define, Proc.new { |*args, **kwargs|
+        use_case_object = args.empty? && kwargs.empty? ? new : new(*args, **kwargs)
         use_case_object.send(method_name)
       })
     end
